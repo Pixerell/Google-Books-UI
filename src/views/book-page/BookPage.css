@@ -1,0 +1,28 @@
+.bookPg {
+    display: flex;
+    justify-content: start;
+    width: 100%;
+    margin-top: 30px;
+    background: white;
+    color: black;
+}
+
+.bookSection {
+    min-width: 40%;
+    min-height: 1vh;
+    background: #d3d3d3;
+}
+
+.imgCont {
+    margin: 5% 15% 5% 15%;
+}
+
+.descriptionSection {
+    text-align: start;
+    margin: 2.5% 2.5% 2.5% 5%;
+
+}
+
+.bookDesc {
+    font-size: 1.2rem;
+}

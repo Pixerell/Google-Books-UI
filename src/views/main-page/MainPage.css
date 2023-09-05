@@ -1,0 +1,65 @@
+.bodySect {
+    margin-top: 30px;
+    padding-top: 30px;
+    background-color: white;
+}
+
+.foundResults {
+    color: black;
+    font-weight: bold;
+    text-align: center;
+}
+
+.cardsWrap {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-items: center;
+    gap: 50px;
+    margin-top: 3%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.footSect {
+    height: 100px;
+    background: linear-gradient(to bottom, white, rgb(232, 232, 232));
+}
+
+@media (max-width: 1800px) {
+    .cardsWrap {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1300px) {
+    .cardsWrap {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 810px) {
+    .cardsWrap {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .selectorWrap {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 400px) {
+
+    .selector {
+        width: 50%;
+    }
+}
+
+
+
+@media (max-width: 250px) {
+    .searchImg {
+        display: none;
+    }
+}
