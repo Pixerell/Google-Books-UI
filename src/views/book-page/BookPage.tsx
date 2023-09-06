@@ -9,7 +9,7 @@ export default function BookPage() {
     return (
         <div className="bookPg">
             {isLoading || error ? (
-                <InfoBlock isLoading={isLoading} error={error}/>
+                <InfoBlock isLoading={isLoading} error={error || null}/>
             ) : (
                 <>
                     <div className="bookSection">

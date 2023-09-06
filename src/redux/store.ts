@@ -1,9 +1,12 @@
 import {configureStore } from '@reduxjs/toolkit';
 import  {api} from "./api";
+import dataReducer, {searchDataReducer} from './dataSlice';
 
 const store = configureStore({
     reducer: {
         [api.reducerPath]: api.reducer,
+        data: dataReducer,
+        search: searchDataReducer,
 
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
@@ -13,6 +16,7 @@ const store = configureStore({
 export default store;
 
 export type RootState = {
-   // filters: ReturnType<typeof filtersReducer>;
+    data: ReturnType<typeof dataReducer>;
+    search: ReturnType<typeof searchDataReducer>;
     // ...other reducers
 };

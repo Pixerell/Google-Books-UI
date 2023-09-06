@@ -1,31 +1,22 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
-const API_HOST = 'free-to-play-games-database.p.rapidapi.com';
+const API_HOST = 'www.googleapis.com/books/v1';
 const API_KEY = 'AIzaSyDEGuxLYnidSDlM-NE8eZ64zpILnUPmBLw';
 
 export const api = createApi({
     baseQuery: fetchBaseQuery({
-        baseUrl: `https://${API_HOST}/api`,
-        prepareHeaders: (headers) => {
-            headers.set('X-RapidAPI-Key', API_KEY);
-            headers.set('X-RapidAPI-Host', API_HOST);
-            return headers;
-        },
+        baseUrl: `https://${API_HOST}`,
     }),
     endpoints: (builder) => ({
-        fetchGames: builder.query({
-            query: (filters) => {
-                return {url: '/games',};
-            },
+        searchBooks: builder.query({
+            query: ({ search, startIndex = 0 }) => {
+                const url = `volumes?q=volumes?q=&key=${API_KEY}&maxResults=40&startIndex=${startIndex}`;
+                console.log(`Fetching URL: https://${API_HOST}/${url}`);
+                return url;
+                },
         }),
-
-        fetchSpecificGame: builder.query({
-            query: ({gameId}) => {
-                return {url: `/game`, params: {id: gameId}};
-            }
-        })
 
     }),
 });
 
-// export const {useFetchBooksQuery} = api;
+export const { useSearchBooksQuery } = api;

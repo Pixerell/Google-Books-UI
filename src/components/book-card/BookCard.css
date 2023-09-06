@@ -4,8 +4,8 @@
     width: 320px;
     height: 460px;
     border-radius: 20px;
-    background-color: #eeeeee;
-    box-shadow: 4px 4px 1px rgba(0, 0, 0, 0.2), -4px -4px 1px rgba(70, 187, 160, 0.3);
+    background-color: #f8f0ff;
+    box-shadow: 4px 4px 1px rgba(0, 0, 0, 0.2), -4px -4px 1px rgba(255, 136, 0, 0.5);
     transition: 0.125s;
 }
 
@@ -30,6 +30,7 @@
 }
 
 .cardBody {
+    overflow: hidden;
     height: 25%;
     width: 100%;
     color: black;
@@ -61,12 +62,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
     width: 120px;
     height: 50px;
     margin-left: -15%;
     margin-top: -8%;
     border-radius: 50px;
-    background-color: #71ffef;
+    background-color: #ffa734;
     color: black;
     font-weight: bold;
 }
