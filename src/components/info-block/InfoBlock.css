@@ -1,0 +1,40 @@
+.loadingBlock {
+    display: flex;
+    align-content: center;
+    width: 80%;
+    height: 10%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 2.5%;
+    padding-top: 2.5%;
+    padding-bottom: 2.5%;
+    border-radius: 5px;
+    text-align: center;
+    color: white;
+    background-color: #38383f;
+    box-shadow: 4px 4px 1px rgba(0, 0, 0, 0.2), -4px -4px 1px rgba(199, 89, 255, 0.3);
+}
+
+.loadingImg {
+    width: 8%;
+    height: 8%;
+    margin-left: 5%;
+    filter: invert(100%);
+    animation: bounce 1.75s infinite ease-in-out;
+}
+
+.loadingTitle {
+    margin-top: 2.5%;
+    padding: 0;
+    font-style: italic;
+    margin-left: 5%;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
