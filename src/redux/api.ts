@@ -18,7 +18,7 @@ export const api = createApi({
         getBook: builder.query({
             query: (volumeId: string) => {
                 return `volumes/${volumeId}`;
-            }
+            }, keepUnusedDataFor: 180,
         }),
     }),
 });

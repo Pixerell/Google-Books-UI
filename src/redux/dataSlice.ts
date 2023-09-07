@@ -17,7 +17,7 @@ export interface IBookResponse {
 
 type BooksResponse = IBookResponse[];
 
-interface IDataState {
+export interface IDataState {
     data: {
         items: BooksResponse;
         totalItems: number;
