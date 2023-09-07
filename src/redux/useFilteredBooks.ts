@@ -1,30 +1,63 @@
-import {useSearchBooksQuery} from "./api";
-import {accumulateBooks, IBookResponse, setStartIndex} from "./dataSlice";
-import {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {MAX_RESULTS, useSearchBooksQuery} from "./api";
+import {
+    accumulateBooks,
+    IBookResponse, increaseRetryCount, PAGINATION_LIMIT,
+    setDisplayCount,
+    setError,
+    setLoading,
+    setStartIndex,
+    setTotalCount
+} from "./dataSlice";
+import {useEffect, useMemo} from "react";
+import {batch, useDispatch, useSelector} from "react-redux";
 import {RootState} from "./store";
+import {resetStateValues} from "../utils/resetStateValues";
 
-export function useFilteredBooks(searchTerm: string) {
+export function useFilteredBooks(searchQuery: { query: string; subject: string; sortOrder: string; }) {
     const dispatch = useDispatch();
-    const startIndex = useSelector((state: RootState) => state.data.startIndex);
-    const [retryCount, setRetryCount] = useState(0);
-    const accumulatedBooks = useSelector((state: RootState) => state.data.accumulatedBooks);
-    const { data, error, isLoading, refetch } = useSearchBooksQuery({ search: searchTerm, startIndex });
-    const books = (data?.items || []).filter((book: IBookResponse) => book.volumeInfo.categories && book.volumeInfo.categories.length > 0);
+    const {query, subject, sortOrder} = searchQuery;
+    const { startIndex, accumulatedBooks, displayCount, retryCount} = useSelector((state: RootState) => state.data);
+    const totalItems = useSelector((state: RootState) => state.data.data.totalItems);
+
+    const {data, error, isLoading, refetch} = useSearchBooksQuery({
+        search: query,
+        subject: subject,
+        sortOrder: sortOrder,
+        startIndex
+    });
+
+    const books = useMemo(() => {
+        return (data?.items || []).filter((book: IBookResponse) => book.volumeInfo.categories && book.volumeInfo.categories.length > 0);
+    }, [data]);
 
     useEffect(() => {
         if (data && data.items) {
-            if (accumulatedBooks.length < 30 || retryCount < 5) {
-                console.log("Retry!")
-                setRetryCount(retryCount + 1);
-                dispatch(setStartIndex(startIndex + 40));
-                dispatch(accumulateBooks(books));
+            if (accumulatedBooks.length < displayCount && retryCount < 5) {
+                batch(() => {
+                    dispatch(increaseRetryCount());
+                    dispatch(setStartIndex(startIndex + MAX_RESULTS));
+                    dispatch(accumulateBooks(books));
+                })
                 refetch();
+            } else {
+                dispatch(setTotalCount(data?.totalItems));
             }
+        } else {
+            batch(() => {
+                dispatch(setDisplayCount(totalItems + PAGINATION_LIMIT));
+                dispatch(setTotalCount(accumulatedBooks.length))
+            })
         }
-    }, [data, refetch]);
+        if (error) {
+            dispatch(setError(error));
+        }
+        dispatch(setLoading(isLoading));
+    }, [data, error, isLoading, refetch, displayCount]);
 
-    console.log(books, isLoading, "- books from hook")
+    useEffect(() => {
+        resetStateValues(dispatch);
+    }, [query, subject, sortOrder]);
+
     return {
         books: accumulatedBooks,
         isLoading,

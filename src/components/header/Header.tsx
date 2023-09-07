@@ -2,39 +2,37 @@ import './Header.css'
 import searchImg from '../../assets/search.svg'
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store";
-import {useEffect, useRef} from "react";
-import {setData, setError, setLoading, setSearchQuery} from "../../redux/dataSlice";
+import {useRef} from "react";
 import {useFilteredBooks} from "../../redux/useFilteredBooks";
+import {setSearchQuery, setSortOrder, setSubjectFilter} from "../../redux/filterSlice";
 
 
 export default function Header() {
 
     const dispatch = useDispatch();
-
     const inputValueRef = useRef<HTMLInputElement | null>(null);
-    const searchQuery = useSelector((state:RootState) => state.search);
-    const { books, isLoading, error } = useFilteredBooks(searchQuery);
-    useEffect(() => {
-        if (books) {
-            dispatch(setData({ items: books }));
-        }
-        if (error) {
-            dispatch(setError(error));
-        }
-        dispatch(setLoading(isLoading));
-    }, [books, error, isLoading, dispatch]);
+    const {query, subject, sortOrder} = useSelector((state: RootState) => state.search);
+    useFilteredBooks({query, subject, sortOrder});
 
     const handleSearch = () => {
         if (inputValueRef.current?.value) {
+            console.log(inputValueRef.current?.value, "INPUT REF")
             dispatch(setSearchQuery(inputValueRef.current?.value))
         }
     }
-
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             handleSearch();
         }
     }
+
+    const handleSortFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        dispatch(setSubjectFilter(e.target.value));
+    };
+
+    const handleSortOrderChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        dispatch(setSortOrder(e.target.value));
+    };
 
     return (
         <div className="mainPg">
@@ -43,28 +41,29 @@ export default function Header() {
                 <div>
                     <input ref={inputValueRef}
                            onKeyDown={handleKeyPress}
-                           defaultValue={searchQuery}
-                        className="searchField"
+                           defaultValue={query}
+                           className="searchField"
                            type="text"
                            placeholder="Search..."/>
-                    <img alt="SeachButton" className="searchImg" src={searchImg}/>
+                    <img onClick={handleSearch} alt="SeachButton" className="searchImg" src={searchImg}/>
                 </div>
                 <div className="filters">
                     <div className="selectorWrap">
                         <p>Categories</p>
-                        <select className="selector">
-                            <option value="all">All</option>
+                        <select className="selector" onChange={handleSortFilterChange}>
+                            <option value="">All</option>
                             <option value="art">Art</option>
                             <option value="biography">Biography</option>
                             <option value="computers">Computers</option>
                             <option value="history">History</option>
                             <option value="medical">Medical</option>
                             <option value="poetry">Poetry</option>
+                            <option value="music">Music</option>
                         </select>
                     </div>
                     <div className="selectorWrap">
                         <p>Sort by</p>
-                        <select className="selector">
+                        <select className="selector" onChange={handleSortOrderChange}>
                             <option value="relevance">Relevance</option>
                             <option value="newest">Newest</option>
                         </select>

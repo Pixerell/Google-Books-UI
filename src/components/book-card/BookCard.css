@@ -2,7 +2,7 @@
     position: relative;
     cursor: pointer;
     width: 320px;
-    height: 460px;
+    height: 480px;
     border-radius: 20px;
     background-color: #f8f0ff;
     box-shadow: 4px 4px 1px rgba(0, 0, 0, 0.2), -4px -4px 1px rgba(255, 136, 0, 0.5);
@@ -10,7 +10,6 @@
 }
 
 .card:hover {
-
     transform: scale(1.01);
 }
 
@@ -49,6 +48,10 @@
 .bookTitle {
     font-size: 1.3rem;
     font-weight: bold;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limit to 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .authorName {

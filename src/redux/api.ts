@@ -1,5 +1,7 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
+export const MAX_RESULTS = 40
+
 const API_HOST = 'www.googleapis.com/books/v1';
 const API_KEY = 'AIzaSyDEGuxLYnidSDlM-NE8eZ64zpILnUPmBLw';
 
@@ -9,14 +11,16 @@ export const api = createApi({
     }),
     endpoints: (builder) => ({
         searchBooks: builder.query({
-            query: ({ search, startIndex = 0 }) => {
-                const url = `volumes?q=volumes?q=&key=${API_KEY}&maxResults=40&startIndex=${startIndex}`;
-                console.log(`Fetching URL: https://${API_HOST}/${url}`);
-                return url;
-                },
+            query: ({search, subject = '', sortOrder = 'relevance', startIndex = 0}) => {
+                return `volumes?q=volumes?q=${search}+subject:${subject}&orderBy=${sortOrder}&key=${API_KEY}&maxResults=${MAX_RESULTS}&startIndex=${startIndex}`;
+            },
         }),
-
+        getBook: builder.query({
+            query: (volumeId: string) => {
+                return `volumes/${volumeId}`;
+            }
+        }),
     }),
 });
 
-export const { useSearchBooksQuery } = api;
+export const {useSearchBooksQuery} = api;

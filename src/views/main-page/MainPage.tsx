@@ -3,50 +3,66 @@ import BookCard from "../../components/book-card/BookCard";
 import {Link} from "react-router-dom";
 import InfoBlock from "../../components/info-block/InfoBlock";
 import load from '../../assets/load.svg'
-import {useSelector} from "react-redux";
+import {batch, useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store";
-import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
-import {SerializedError} from "@reduxjs/toolkit";
-import {useState} from "react";
+import {useFilteredBooks} from "../../redux/useFilteredBooks";
+import {
+    PAGINATION_LIMIT,
+    resetRetryCount,
+    setDisplayCount,
+} from "../../redux/dataSlice";
 
 export default function MainPage() {
-    const [displayCount, setDisplayCount] = useState(30);
-    const booksData = useSelector((state: RootState) => state.data.data);
-    const books = booksData?.items;
-    const isLoading = useSelector((state: RootState) => state.data.isLoading);
-    const error = useSelector((state: RootState) => state.data.error) as FetchBaseQueryError | SerializedError | null;
 
+    const dispatch = useDispatch()
+    const { totalItems, displayCount } = useSelector((state: RootState) => ({
+        totalItems: state.data.data.totalItems,
+        displayCount: state.data.displayCount,
+    }));
+    const searchQuery = useSelector((state: RootState) => state.search);
+    const {books, isLoading, error} = useFilteredBooks(searchQuery);
     const booksToDisplay = books.slice(0, displayCount);
 
     const handleLoadMore = () => {
-        if (books.length >= displayCount + 30) {
-            setDisplayCount(displayCount + 30);
+        if (books.length >= displayCount + PAGINATION_LIMIT) {
+            dispatch(setDisplayCount(displayCount + PAGINATION_LIMIT));
         } else {
-            console.log("NEED MOAR BOOKS")
+            batch(() => {
+                dispatch(setDisplayCount(displayCount + PAGINATION_LIMIT))
+                dispatch(resetRetryCount())
+            })
         }
     };
 
     return (
-            <div className="bodySect">
-                {isLoading || error ? (
-                    <InfoBlock isLoading={isLoading} error={error || null}/>
-                ) : (
-                    <>
-                        <span className="foundResults">Found Results: {booksData.totalItems}</span>
-                        <div className="cardsWrap">
-                            {booksToDisplay && booksToDisplay.map((book: any) => (
-                                <Link key={book.id} to={`/book/${book.id}`}>
-                                    <BookCard {...book}/>
-                                </Link>
-                            ))}
-                        </div>
-                        <button onClick={handleLoadMore} className="loadButton">
-                            <div>LOAD 30 MORE</div>
-                            <img alt="Loading button" className="buttonImg" src={load}/>
-                        </button>
-                    </>
-                )}
-                <div className="footSect"></div>
-            </div>
+        <div className="bodySect">
+            {isLoading || error || !booksToDisplay.length ? (
+                <InfoBlock isLoading={isLoading} error={error || null}/>
+            ) : (
+                <>
+                    <span className="foundResults">Found Results: {totalItems === 0 ? "..." : totalItems}</span>
+                    <div className="cardsWrap">
+                        {booksToDisplay && booksToDisplay.map((book: any) => (
+                            <Link key={book.id} to={`/book/${book.id}`}>
+                                <BookCard {...book}/>
+                            </Link>
+                        ))}
+                    </div>
+                    <button onClick={handleLoadMore} className="loadButton">
+                        {displayCount > totalItems ? (
+                            <div>
+                                <div>END OF LIST</div>
+                            </div>
+                        ) : (
+                            <div>
+                                <div>LOAD 30 MORE</div>
+                            </div>
+                        )}
+                        <img alt="Loading button" className="buttonImg" src={load}/>
+                    </button>
+                </>
+            )}
+            <div className="footSect"></div>
+        </div>
     );
 }

@@ -16,7 +16,7 @@ function App() {
                 <Routes>
                 <Route path="/" element={<MainPage/>}/>
                 <Route path="/" element={<MainPage/>}/>
-                <Route path="/book/:id" element={<BookPage/>}/>
+                <Route path="/book/:bookId" element={<BookPage/>}/>
                 <Route path="*" element={<Navigate to="/"/>}/>
               </Routes>
             </Router>

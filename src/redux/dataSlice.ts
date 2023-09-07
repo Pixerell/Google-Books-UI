@@ -1,6 +1,8 @@
 import {createSlice, PayloadAction, SerializedError} from '@reduxjs/toolkit';
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
 
+export const PAGINATION_LIMIT = 30
+
 export interface IBookResponse {
     id: string;
     volumeInfo: {
@@ -10,9 +12,9 @@ export interface IBookResponse {
             thumbnail: string;
         };
         categories?: string[];
-
     };
 }
+
 type BooksResponse = IBookResponse[];
 
 interface IDataState {
@@ -23,8 +25,10 @@ interface IDataState {
     isLoading: boolean;
     error: FetchBaseQueryError | SerializedError | null;
     startIndex: number;
+    retryCount: number;
+    paginationLimit: number;
+    displayCount: number;
     accumulatedBooks: IBookResponse[];
-
 }
 
 const initialState: IDataState = {
@@ -34,37 +38,43 @@ const initialState: IDataState = {
     },
     isLoading: false,
     error: null,
+    retryCount: 0,
     startIndex: 0,
+    displayCount: PAGINATION_LIMIT,
+    paginationLimit: PAGINATION_LIMIT,
     accumulatedBooks: [],
 };
-
-
 
 const dataSlice = createSlice({
     name: 'data',
     initialState,
     reducers: {
-        setData: (state, action: PayloadAction<any>) => {
-                state.data.items = action.payload.items;
-                state.data.totalItems = state.data.items.length;
-                },
+        setTotalCount: (state, action: PayloadAction<number>) => {
+            state.data.totalItems = action.payload;
+        },
         setLoading: (state, action: PayloadAction<boolean>) => {
             state.isLoading = action.payload;
         },
-        setError: (state, action:  PayloadAction<FetchBaseQueryError | SerializedError | null>) => {
+        setError: (state, action: PayloadAction<FetchBaseQueryError | SerializedError | null>) => {
             state.error = action.payload;
         },
         setStartIndex: (state, action: PayloadAction<number>) => {
             state.startIndex = action.payload;
         },
+        setDisplayCount: (state, action) => {
+            state.displayCount = action.payload;
+        },
+        increaseRetryCount: (state) => {
+            state.retryCount += 1;
+        },
+        resetRetryCount: (state) => {
+            state.retryCount = 0;
+        },
         accumulateBooks: (state, action: PayloadAction<IBookResponse[]>) => {
             const newBooks = action.payload;
-
             const combinedBooks = [...state.accumulatedBooks, ...newBooks];
-
             const uniqueTitles = new Set();
             const uniqueIds = new Set();
-
             state.accumulatedBooks = combinedBooks.filter((book) => {
                 if (uniqueIds.has(book.id) || uniqueTitles.has(book.volumeInfo.title)) {
                     return false;
@@ -73,28 +83,23 @@ const dataSlice = createSlice({
                 uniqueTitles.add(book.volumeInfo.title);
                 return true;
             });
-        }
-    },
-});
-
-const searchSlice = createSlice({
-    name: 'search',
-    initialState: '',
-    reducers: {
-        setSearchQuery: (state, action) => {
-            return action.payload;
+        },
+        resetAccumulatedBooks: (state) => {
+            state.accumulatedBooks = [];
         },
     },
 });
 
-export const { setSearchQuery } = searchSlice.actions;
 export const {
-    setData,
+    setTotalCount,
     setLoading,
     setError,
     accumulateBooks,
-    setStartIndex
-} = { ...dataSlice.actions };
+    setStartIndex,
+    resetAccumulatedBooks,
+    setDisplayCount,
+    increaseRetryCount,
+    resetRetryCount,
+} = {...dataSlice.actions};
 
-export const searchDataReducer = searchSlice.reducer;
 export default dataSlice.reducer;
