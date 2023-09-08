@@ -8,7 +8,7 @@ import dataReducer, {
 } from './dataSlice';
 import filterSlice from "./filterSlice";
 import {renderHook} from "@testing-library/react";
-import {useFilteredBooks} from "./useFilteredBooks";
+import {useFilteredBooks} from "../utils/useFilteredBooks";
 
 describe('dataSlice', () => {
     let initialState: IDataState;

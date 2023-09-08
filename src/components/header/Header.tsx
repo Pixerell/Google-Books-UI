@@ -3,7 +3,7 @@ import searchImg from '../../assets/search.svg'
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store";
 import {useRef} from "react";
-import {useFilteredBooks} from "../../redux/useFilteredBooks";
+import {useFilteredBooks} from "../../utils/useFilteredBooks";
 import {setSearchQuery, setSortOrder, setSubjectFilter} from "../../redux/filterSlice";
 
 
@@ -16,10 +16,10 @@ export default function Header() {
 
     const handleSearch = () => {
         if (inputValueRef.current?.value) {
-            console.log(inputValueRef.current?.value, "INPUT REF")
             dispatch(setSearchQuery(inputValueRef.current?.value))
         }
     }
+
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             handleSearch();

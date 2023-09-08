@@ -4,8 +4,8 @@
     bottom: 0;
     right: 2.5%;
     margin-bottom: 2.5%;
-    background: #38383f;
     padding: 0.75%;
+    background: #38383f;
     border-radius: 100px;
     z-index: 1337;
 }
@@ -13,9 +13,9 @@
 .floatingImg {
     width: 32px;
     height: 32px;
-    filter: invert(100%);
     pointer-events: none;
     user-select: none;
+    filter: invert(100%);
 }
 
 .floatingButton:hover {

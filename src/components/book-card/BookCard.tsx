@@ -21,8 +21,7 @@ export default function BookCard({id, volumeInfo}: IBookResponse) {
             <div className="cardBody">
                 <div className="infoWrap">
                     <span className="bookTitle">{volumeInfo?.title}</span>
-                    <span
-                        className="authorName">{volumeInfo?.authors ? volumeInfo.authors.join(", ") : "Unknown Author"}</span>
+                    <span className="authorName">{volumeInfo?.authors ? volumeInfo.authors.join(", ") : "Unknown Author"}</span>
                 </div>
             </div>
         </div>

@@ -14,11 +14,10 @@ function App() {
             <Router>
                 <FloatingButton/>
                 <Routes>
-                <Route path="/" element={<MainPage/>}/>
-                <Route path="/" element={<MainPage/>}/>
-                <Route path="/book/:bookId" element={<BookPage/>}/>
-                <Route path="*" element={<Navigate to="/"/>}/>
-              </Routes>
+                    <Route path="/" element={<MainPage/>}/>
+                    <Route path="/book/:bookId" element={<BookPage/>}/>
+                    <Route path="*" element={<Navigate to="/"/>}/>
+                </Routes>
             </Router>
         </div>
     </div>

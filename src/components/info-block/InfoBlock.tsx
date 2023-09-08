@@ -4,12 +4,12 @@ import errorImg from '../../assets/error.svg'
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
 import {SerializedError} from "@reduxjs/toolkit";
 
-
 export default function InfoBlock({isLoading, error}: {
     isLoading: boolean;
     error: FetchBaseQueryError | SerializedError | null;
 }) {
     const shouldShowError = !isLoading && error;
+
     return (
         <div className="loadingBlock">
             <img alt="Loading Indicator" className="loadingImg" src={shouldShowError ? errorImg : wait}/>

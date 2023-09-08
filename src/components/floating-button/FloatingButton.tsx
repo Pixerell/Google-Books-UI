@@ -6,6 +6,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 export default function FloatingButton() {
     const location = useLocation();
     const navigate = useNavigate();
+
     const handleClick = () => {
         if (location.pathname === '/') {
             window.scrollTo({top: 0, behavior: 'smooth'});
@@ -13,6 +14,7 @@ export default function FloatingButton() {
             navigate('/');
         }
     };
+
     return (
         <div className="floatingButton" onClick={handleClick}>
             <img alt="Floating Button" className="floatingImg" src={location.pathname === '/' ? up : home}/>

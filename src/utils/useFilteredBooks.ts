@@ -1,4 +1,4 @@
-import {MAX_RESULTS, useSearchBooksQuery} from "./api";
+import {MAX_RESULTS, useSearchBooksQuery} from "../redux/api";
 import {
     accumulateBooks,
     IBookResponse, increaseRetryCount, PAGINATION_LIMIT,
@@ -7,11 +7,11 @@ import {
     setLoading,
     setStartIndex,
     setTotalCount
-} from "./dataSlice";
+} from "../redux/dataSlice";
 import {useEffect, useMemo} from "react";
 import {batch, useDispatch, useSelector} from "react-redux";
-import {RootState} from "./store";
-import {resetStateValues} from "../utils/resetStateValues";
+import {RootState} from "../redux/store";
+import {resetStateValues} from "./resetStateValues";
 
 export function useFilteredBooks(searchQuery: { query: string; subject: string; sortOrder: string; }) {
     const dispatch = useDispatch();

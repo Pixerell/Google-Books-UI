@@ -27,9 +27,8 @@
 }
 
 .descriptionSection {
-    text-align: start;
     margin: 2.5% 2.5% 2.5% 5%;
-
+    text-align: start;
 }
 
 .bookDesc {
@@ -56,6 +55,7 @@
     .desktop {
         display: none;
     }
+
     .mobile {
         display: block;
     }

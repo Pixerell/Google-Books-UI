@@ -5,7 +5,7 @@ import InfoBlock from "../../components/info-block/InfoBlock";
 import load from '../../assets/load.svg'
 import {batch, useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store";
-import {useFilteredBooks} from "../../redux/useFilteredBooks";
+import {useFilteredBooks} from "../../utils/useFilteredBooks";
 import {
     PAGINATION_LIMIT,
     resetRetryCount,
