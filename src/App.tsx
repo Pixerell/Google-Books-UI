@@ -10,8 +10,8 @@ function App() {
   return (
     <div className="App">
         <div className="mainBg">
-            <Header/>
             <Router>
+                <Header/>
                 <FloatingButton/>
                 <Routes>
                     <Route path="/" element={<MainPage/>}/>

@@ -15,11 +15,10 @@ import {
 export default function MainPage() {
 
     const dispatch = useDispatch()
-    const { totalItems, displayCount } = useSelector((state: RootState) => ({
-        totalItems: state.data.data.totalItems,
-        displayCount: state.data.displayCount,
-    }));
-    const searchQuery = useSelector((state: RootState) => state.search);
+    const data = useSelector((state: RootState) => state.data);
+    const totalItems = data.data.totalItems;
+    const displayCount = data.displayCount;
+    const searchQuery = useSelector((state: RootState) => state.search, );
     const {books, isLoading, error} = useFilteredBooks(searchQuery);
     const booksToDisplay = books.slice(0, displayCount);
 
@@ -42,7 +41,7 @@ export default function MainPage() {
                 <>
                     <span className="foundResults">Found Results: {totalItems === 0 ? "..." : totalItems}</span>
                     <div className="cardsWrap">
-                        {booksToDisplay && booksToDisplay.map((book: any) => (
+                        {booksToDisplay && booksToDisplay.map((book) => (
                             <Link key={book.id} to={`/book/${book.id}`}>
                                 <BookCard {...book}/>
                             </Link>

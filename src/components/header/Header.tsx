@@ -5,17 +5,21 @@ import {RootState} from "../../redux/store";
 import {useRef} from "react";
 import {useFilteredBooks} from "../../utils/useFilteredBooks";
 import {setSearchQuery, setSortOrder, setSubjectFilter} from "../../redux/filterSlice";
+import {useNavigate} from "react-router-dom";
 
 
 export default function Header() {
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const inputValueRef = useRef<HTMLInputElement | null>(null);
     const {query, subject, sortOrder} = useSelector((state: RootState) => state.search);
     useFilteredBooks({query, subject, sortOrder});
 
     const handleSearch = () => {
         if (inputValueRef.current?.value) {
+            navigate('/');
             dispatch(setSearchQuery(inputValueRef.current?.value))
         }
     }
