@@ -1,46 +1,30 @@
-# Getting Started with Create React App
+# Google-Books-UI
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Небольшое веб-приложение по поиску и сортировке книг через Google Books API. В приложении используется React/Redux~RTK, и как единственная дополнительная библиотека для рутинга - react-router. Тестирование проводилось с помощью jest
 
-## Available Scripts
+# Запуск приложения
 
-In the project directory, you can run:
+Это приложение использует docker, так что всё что нужно это запустить файл docker-compose.yml и после окончания сборки зайти по адресу http://localhost:3000/. 
 
-### `npm start`
+Если не использовать docker-compose то можно приложение собрать другим путем:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1 - Создать образ docker build -t react-books-image .
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+2 - Создать контейнер через эту команду docker run -it -e WATCHPACK_POLLING=true -v C:\Code\google-books-ui\google-books-app\src:/app/src:ro -d -p 3000:3000 --name react-books-app react-books-image
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+В противных случаях можно просто написать npm install и приложение запуститься без докера.
 
-### `npm run build`
+# Скриншоты работы приложения:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1 - Главная страница (сортировка по музыке)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![image](https://github.com/Pixerell/Google-Books-UI/assets/90747184/db717dea-146e-4ba8-870f-187055fd1e30)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1.5 - Пагинация (с поисковым запросом javascript)
 
-### `npm run eject`
+![image](https://github.com/Pixerell/Google-Books-UI/assets/90747184/0da64525-01d2-42d5-a21c-ba8a19773b43)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+2 - Страница с выбранной книгой 
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+![image](https://github.com/Pixerell/Google-Books-UI/assets/90747184/1820cdd8-0b3a-47f9-a186-29f18f54f9f1)
